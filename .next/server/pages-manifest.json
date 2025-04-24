@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/admin-dashboard": "pages/admin-dashboard.js",
+  "/dashboard": "pages/dashboard.js",
+  "/change-password": "pages/change-password.js",
+  "/register": "pages/register.js",
+  "/send-campaign": "pages/send-campaign.js",
+  "/login": "pages/login.js",
+  "/_document": "pages/_document.js"
+}
