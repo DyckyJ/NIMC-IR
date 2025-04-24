@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { supabase } from '@/superbase-attendance/lib/supabaseClient'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabaseClient'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -14,8 +15,48 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
-    <Link href="/change-password">Forgot Password?</Link>
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-    // Attempt to sign in
-    const
+    if (error) {
+      setError(error.message)
+    } else {
+      router.push('/dashboard')
+    }
 
+    setLoading(false)
+  }
+
+  return (
+    <div className="login-container">
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+
+      <p>
+        <Link href="/change-password">Forgot Password?</Link>
+      </p>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  )
+}

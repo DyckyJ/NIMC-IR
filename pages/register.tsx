@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '@/lib/supabaseClient.ts'
+import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/router'
 
 export default function RegisterPage() {
@@ -24,9 +24,18 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
+    // Clean inputs
+    const cleanedForm = {
+      ...form,
+      email: form.email.trim(),
+      first_name: form.first_name.trim(),
+      last_name: form.last_name.trim(),
+      department: form.department.trim(),
+    }
+
     // Step 1: Sign up user with Supabase Auth
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email: form.email,
+      email: cleanedForm.email,
       password: form.password,
     })
 
@@ -36,14 +45,14 @@ export default function RegisterPage() {
       return
     }
 
-    // Step 2: Add user data to the 'users' table
+    // Step 2: Add user to custom "users" table
     const { error: dbError } = await supabase.from('users').insert([
       {
-        first_name: form.first_name,
-        last_name: form.last_name,
-        email: form.email,
-        department: form.department,
-        approved: false, // Admin will approve
+        first_name: cleanedForm.first_name,
+        last_name: cleanedForm.last_name,
+        email: cleanedForm.email,
+        department: cleanedForm.department,
+        approved: false,
       },
     ])
 
@@ -63,9 +72,9 @@ export default function RegisterPage() {
       <form onSubmit={handleSubmit}>
         <input name="first_name" placeholder="First Name" onChange={handleChange} required />
         <input name="last_name" placeholder="Last Name" onChange={handleChange} required />
-        <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
+        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
         <input name="department" placeholder="Department" onChange={handleChange} required />
-        <input name="password" placeholder="Password (8-digits)" type="password" onChange={handleChange} minLength={8} required />
+        <input name="password" type="password" placeholder="Password (8+ characters)" minLength={8} onChange={handleChange} required />
         <button type="submit" disabled={loading}>{loading ? 'Registering...' : 'Register'}</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
