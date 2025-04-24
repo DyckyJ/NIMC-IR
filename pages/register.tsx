@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '@/superbase-attendance/lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient.ts'
 import { useRouter } from 'next/router'
 
 export default function RegisterPage() {

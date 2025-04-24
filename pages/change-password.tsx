@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { supabase } from '@/superbase-attendance/lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/router'
+import { sendEmail } from '@/services/brevo'
+import Link from 'next/link'
 
 export default function ChangePassword() {
   const [oldPassword, setOldPassword] = useState('')

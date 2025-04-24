@@ -17,7 +17,12 @@ export default function Dashboard() {
 
       if (!user || error) {
         router.push('/login')
-        return
+        return (
+          <div>
+            <Link href="/change-password">Forgot Password?</Link>
+            {/* other elements */}
+          </div>
+        )
       }
 
       setUser(user)
@@ -29,7 +34,5 @@ export default function Dashboard() {
 
   const checkAttendance = async (userId: string) => {
     const today = new Date().toISOString().split('T')[0]
-
-    <Link href="/change-password">Forgot Password?</Link>
 
     const { data,
